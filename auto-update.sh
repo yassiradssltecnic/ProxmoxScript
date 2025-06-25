@@ -37,7 +37,4 @@ NEED_REBOOT=0
         reboot
     fi
 } >> "$LOGFILE" 2>&1
-root@proxmox01:~# chmod +x /usr/local/sbin/auto-update.sh^C
-root@proxmox01:~# cat /usr/local/sbin/auto-update.sh
-#!/bin/bash
 
