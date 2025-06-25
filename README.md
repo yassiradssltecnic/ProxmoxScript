@@ -26,8 +26,7 @@ apt install msmtp msmtp-mta mailutils -y
 ```
 nano /etc/msmtprc
 ```
-```
-  GNU nano 7.2                                                                 /etc/msmtprc                                                                          
+```                                                                         
 defaults
 auth           on
 tls            on
