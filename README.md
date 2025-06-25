@@ -7,7 +7,7 @@ Aquest script serveix per configurar la xarxa del nostre proxmox una vegada inst
 ## Configuracio d'actualitzacions (auto-update.sh)
 Aquest script serveix per configurar les actualitzacions automàtiques al proxmox es revisa cada dos setmanes el diumenge a les 2 de la nit, també revisem si tenim que reiniciar, totes les accions es guarden en els logs per saber tot el que ha passat.
 
-### IMPORTANT POSAR EL CONTAB
+### IMPORTANT POSAR EL CRONTAB
 Executem: crontab -e
 I afegim aquesta línia: 0 2 * * 0 [ $(($(date +\%U) \% 2)) -eq 0 ] && /usr/local/sbin/auto-update.sh
 
