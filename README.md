@@ -27,15 +27,23 @@ apt install msmtp msmtp-mta mailutils -y
 nano /etc/msmtprc
 ```
 ```
+  GNU nano 7.2                                                                 /etc/msmtprc                                                                          
+defaults
+auth           on
+tls            on
+tls_starttls   on
+tls_trust_file /etc/ssl/certs/ca-certificates.crt
+logfile        /var/log/msmtp.log
+
 account        adssl
 host           smtp.adssl.com
 port           587
-from           avisos0@adssl.com
-user           avisos0@adssl.com
-password       latevapassword
-tls            on
-tls_starttls   on
+from           avisosX@adssl.com
+user           avisosX@adssl.com
+password       tupassword
 tls_certcheck  off
+
+account default : adssl
 ```
 ```
 chmod 600 /etc/msmtprc
