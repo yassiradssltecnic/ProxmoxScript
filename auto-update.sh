@@ -30,11 +30,5 @@ NEED_REBOOT=0
 
     mail -s "$SUBJECT" "$EMAIL" < $LOGFILE
 
-    # Si se requiere reinicio, esperar unos segundos y reiniciar
-    if [ "$NEED_REBOOT" -eq 1 ]; then
-        echo "Reiniciando sistema en 30 segundos..."
-        sleep 30
-        reboot
-    fi
 } >> "$LOGFILE" 2>&1
 
