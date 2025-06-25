@@ -16,6 +16,7 @@ Aquest script serveix per configurar les actualitzacions automàtiques al proxmo
 ```
 nano /usr/local/sbin/auto-update.sh
 ```
+Una vegada fet aixo hem de afegir el codi de auto-update.sh aqui dintre
 ```
 chmod +x /usr/local/sbin/auto-update.sh
 ```
