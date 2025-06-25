@@ -13,7 +13,7 @@ chmod +x /usr/local/sbin/auto-update.sh
 Aquest script serveix per configurar les actualitzacions automàtiques al proxmox es revisa cada dos setmanes el diumenge a les 2 de la nit, també revisem si tenim que reiniciar, totes les accions es guarden en els logs per saber tot el que ha passat.
 
 ### Configuracio previa
-```sh
+```bash
 nano /usr/local/sbin/auto-update.sh
 ```
 ```
