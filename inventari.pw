@@ -1,0 +1,36 @@
+# Obtener información del sistema
+$SystemInfo = Get-WmiObject Win32_ComputerSystem
+$CPU = Get-WmiObject Win32_Processor
+$OS = Get-WmiObject Win32_OperatingSystem
+$Disks = Get-WmiObject Win32_LogicalDisk -Filter "DriveType=3"
+$Software = Get-ItemProperty HKLM:\Software\Wow6432Node\Microsoft\Windows\CurrentVersion\Uninstall\* |
+            Select-Object DisplayName, DisplayVersion, Publisher
+
+Write-Output "===== SISTEMA ====="
+Write-Output "Nombre del PC: $($SystemInfo.Name)"
+Write-Output "Usuario actual: $($SystemInfo.UserName)"
+Write-Output "Fabricante: $($SystemInfo.Manufacturer)"
+Write-Output "Modelo: $($SystemInfo.Model)"
+Write-Output "Memoria RAM (MB): $([int]($SystemInfo.TotalPhysicalMemory / 1MB))"
+Write-Output ""
+
+Write-Output "===== CPU ====="
+Write-Output "Nombre: $($CPU.Name)"
+Write-Output "Núcleos: $($CPU.NumberOfCores)"
+Write-Output ""
+
+Write-Output "===== SO ====="
+Write-Output "Nombre: $($OS.Caption)"
+Write-Output "Versión: $($OS.Version)"
+Write-Output "Arquitectura: $($OS.OSArchitecture)"
+Write-Output "Último reinicio: $($OS.LastBootUpTime)"
+Write-Output ""
+
+Write-Output "===== Discos ====="
+foreach ($d in $Disks) {
+    Write-Output "$($d.DeviceID): $([math]::Round($d.Size / 1GB, 2)) GB libres: $([math]::Round($d.FreeSpace / 1GB, 2)) GB"
+}
+Write-Output ""
+
+Write-Output "===== SOFTWARE INSTALADO ====="
+$Software | Where-Object { $_.DisplayName } | Format-Table -AutoSize
