@@ -6,31 +6,44 @@ $Disks = Get-WmiObject Win32_LogicalDisk -Filter "DriveType=3"
 $Software = Get-ItemProperty HKLM:\Software\Wow6432Node\Microsoft\Windows\CurrentVersion\Uninstall\* |
             Select-Object DisplayName, DisplayVersion, Publisher
 
-Write-Output "===== SISTEMA ====="
-Write-Output "Nombre del PC: $($SystemInfo.Name)"
-Write-Output "Usuario actual: $($SystemInfo.UserName)"
-Write-Output "Fabricante: $($SystemInfo.Manufacturer)"
-Write-Output "Modelo: $($SystemInfo.Model)"
-Write-Output "Memoria RAM (MB): $([int]($SystemInfo.TotalPhysicalMemory / 1MB))"
-Write-Output ""
+# Nombre del fichero basado en el nombre del equipo
+$NombreEquipo = $SystemInfo.Name
+$RutaSalida = "$env:USERPROFILE\Desktop\Inventario_$NombreEquipo.txt"
 
-Write-Output "===== CPU ====="
-Write-Output "Nombre: $($CPU.Name)"
-Write-Output "Núcleos: $($CPU.NumberOfCores)"
-Write-Output ""
+# Crear una lista para ir guardando la salida
+$salida = @()
 
-Write-Output "===== SO ====="
-Write-Output "Nombre: $($OS.Caption)"
-Write-Output "Versión: $($OS.Version)"
-Write-Output "Arquitectura: $($OS.OSArchitecture)"
-Write-Output "Último reinicio: $($OS.LastBootUpTime)"
-Write-Output ""
+$salida += "===== SISTEMA ====="
+$salida += "Nombre del PC: $($SystemInfo.Name)"
+$salida += "Usuario actual: $($SystemInfo.UserName)"
+$salida += "Fabricante: $($SystemInfo.Manufacturer)"
+$salida += "Modelo: $($SystemInfo.Model)"
+$salida += "Memoria RAM (MB): $([int]($SystemInfo.TotalPhysicalMemory / 1MB))"
+$salida += ""
 
-Write-Output "===== Discos ====="
+$salida += "===== CPU ====="
+$salida += "Nombre: $($CPU.Name)"
+$salida += "Núcleos: $($CPU.NumberOfCores)"
+$salida += ""
+
+$salida += "===== SO ====="
+$salida += "Nombre: $($OS.Caption)"
+$salida += "Versión: $($OS.Version)"
+$salida += "Arquitectura: $($OS.OSArchitecture)"
+$salida += "Último reinicio: $($OS.LastBootUpTime)"
+$salida += ""
+
+$salida += "===== Discos ====="
 foreach ($d in $Disks) {
-    Write-Output "$($d.DeviceID): $([math]::Round($d.Size / 1GB, 2)) GB libres: $([math]::Round($d.FreeSpace / 1GB, 2)) GB"
+    $salida += "$($d.DeviceID): $([math]::Round($d.Size / 1GB, 2)) GB libres: $([math]::Round($d.FreeSpace / 1GB, 2)) GB"
 }
-Write-Output ""
+$salida += ""
 
-Write-Output "===== SOFTWARE INSTALADO ====="
-$Software | Where-Object { $_.DisplayName } | Format-Table -AutoSize
+$salida += "===== SOFTWARE INSTALADO ====="
+$salida += ($Software | Where-Object { $_.DisplayName } | Format-Table DisplayName, DisplayVersion, Publisher -AutoSize | Out-String)
+
+# Guardar todo en el archivo
+$salida | Out-File -FilePath $RutaSalida -Encoding UTF8
+
+Write-Host "✔ Inventario guardado en: $RutaSalida"
+
